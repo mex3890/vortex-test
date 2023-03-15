@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Core\Abstractions\Model;
 
-class User extends Model
+class Test extends Model
 {
-    public string $table = 'users';
+    public string $table = 'tests';
 }

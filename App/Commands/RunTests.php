@@ -9,12 +9,11 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableStyle;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'run tests',
+    name: 'test:run',
     description: 'This command run the Tests in Dummy directory.'
 )]
 class RunTests extends Command
@@ -28,12 +27,6 @@ class RunTests extends Command
         $this->cosmo = new Cosmo();
 
         parent::__construct();
-    }
-
-    protected function configure()
-    {
-        $this->setHelp('Run this command to execute test(s) file(s).')
-            ->addArgument('name', InputArgument::IS_ARRAY, 'Test file(s) to run');
     }
 
     /**
