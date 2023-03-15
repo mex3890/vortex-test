@@ -12,9 +12,10 @@ class CreateTestTable extends Migration
     public static function up(): void
     {
         Schema::create(Conductor::TEST_TABLE_NAME, function (TableBuilder $table) {
-            $table->id();
+            $table->id()->primaryKey()->autoIncrement();
             $table->varchar('name', 255);
-            $table->float('result');
+            $table->float('operation_full_time_in_milliseconds');
+            $table->float('average_in_milliseconds');
             $table->dateTime('date');
             $table->int('count');
 

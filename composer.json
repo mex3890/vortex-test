@@ -14,6 +14,7 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "vortex-framework/vortex-framework": "^2.1"
+        "vortex-framework/vortex-framework": "^2.1",
+      "ext-bcmath": "*"
     }
 }
