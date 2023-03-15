@@ -1,0 +1,51 @@
+.pagination-nav {
+    .pagination-links-list {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style: none;
+
+        .page-item {
+            background: linear-gradient(to right, #d3d3d3, #ececec);
+            padding: 5px 10px;
+            border: 1px solid darkgray;
+            width: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:nth-child(1) {
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
+
+            &:nth-last-child(1) {
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+            &.lateral_button_link {
+                width: unset;
+            }
+
+            &.active {
+                background: rgb(10, 197, 171);
+                border: 1px solid #00C2CB;
+
+                & > .page-link {
+                    color: white;
+                }
+            }
+
+            .page-link {
+                width: 100%;
+                height: 100%;
+                text-decoration: none;
+                color: #333333;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+#cards-list {
+    width: 80vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    .card {
+        border: 1px solid #a9a9a9;
+        border-radius: 5px;
+        width: 100%;
+
+        .card-row {
+            border-bottom: 1px solid #a9a9a9;
+            display: flex;
+
+            span:nth-child(1) {
+                padding-left: 5px;
+                width: 30%;
+                max-width: 100px;
+                background: linear-gradient(90deg,#d3d3d3,#ececec);
+                border-right: 1px solid #a9a9a9;
+            }
+
+            span:nth-child(2) {
+                width: 70%;
+                padding-left: 5px;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+                display: -webkit-box;
+                overflow: hidden;
+            }
+        }
+    }
+}

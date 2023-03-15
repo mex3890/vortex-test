@@ -1,0 +1,45 @@
+#default {
+    background-color: $gray_color;
+
+    main {
+
+        #vortex-logo {
+            height: 15vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                height: 20vh;
+            }
+        }
+
+        #text-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+
+            h1 {
+                font-size: 8rem;
+                margin: 0;
+                color: white;
+            }
+
+            p {
+                font-size: 2rem;
+                color: white;
+            }
+        }
+
+
+        a {
+            text-decoration: none;
+            background-color: $main_color;
+            border-radius: 1000px;
+            color: white;
+            padding: 8px 40px;
+        }
+    }
+}

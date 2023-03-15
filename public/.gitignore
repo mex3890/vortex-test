@@ -1,0 +1,6 @@
+/views
+*.css
+*.js
+*.scss
+*.sass
+*.map

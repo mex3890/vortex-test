@@ -1,0 +1,19 @@
+{
+    "name": "vortex-framework/vortex",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "vortex-framework/vortex-framework": "^2.1"
+    }
+}
