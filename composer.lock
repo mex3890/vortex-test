@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1abe2a9f54afff8bb412b3c6108d24ab",
+    "content-hash": "1a40a53854d2ecfef2696ec869d0c20a",
     "packages": [
         {
             "name": "fzaninotto/faker",
@@ -1768,16 +1768,16 @@
         },
         {
             "name": "vortex-framework/vortex-framework",
-            "version": "2.1.20",
+            "version": "2.1.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mex3890/vortex-framework.git",
-                "reference": "b22a9cc9d6204797548c7e31b899c8f7b8f58af9"
+                "reference": "b3402bc28e84c23385c70db530e2d02fec93e993"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mex3890/vortex-framework/zipball/b22a9cc9d6204797548c7e31b899c8f7b8f58af9",
-                "reference": "b22a9cc9d6204797548c7e31b899c8f7b8f58af9",
+                "url": "https://api.github.com/repos/mex3890/vortex-framework/zipball/b3402bc28e84c23385c70db530e2d02fec93e993",
+                "reference": "b3402bc28e84c23385c70db530e2d02fec93e993",
                 "shasum": ""
             },
             "require": {
@@ -1810,9 +1810,9 @@
             "description": "description",
             "support": {
                 "issues": "https://github.com/mex3890/vortex-framework/issues",
-                "source": "https://github.com/mex3890/vortex-framework/tree/2.1.20"
+                "source": "https://github.com/mex3890/vortex-framework/tree/2.1.24"
             },
-            "time": "2023-03-08T01:13:44+00:00"
+            "time": "2023-03-29T00:55:25+00:00"
         }
     ],
     "packages-dev": [],
@@ -1821,7 +1821,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-bcmath": "*"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
 }
