@@ -13,7 +13,7 @@ class CreatePhonesTable extends Migration
         Schema::create('phones', function (TableBuilder $table) {
             $table->id()->primaryKey()->autoIncrement();
             $table->varchar('number', 30);
-            $table->id('user_id')->foreignKey('users', 'id');
+            $table->id('user_id')->unique()->foreignKey('users', 'id');
             return $table;
         });
     }

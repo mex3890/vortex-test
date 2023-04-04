@@ -7,7 +7,8 @@ use Core\Routes\Route;
 $route = new Route();
 
 $route->get('/', function () {
-    view('vortex.galaxy.tpl');
+    $x = \App\Models\X::find()->where('id', 1)->first()->get();
+    dd($x->ks()->get());
 });
 
 $route->get('/login', function () {
