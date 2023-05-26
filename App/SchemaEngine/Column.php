@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AutoRelation;
+namespace App\SchemaEngine;
 
 class Column
 {

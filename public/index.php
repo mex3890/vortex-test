@@ -1,6 +1,8 @@
 <?php
 
 use Core\Core\ErrorManager;
+use Core\Database\Connection;
+use Core\Database\Query\ChangeTableBuilder;
 use Core\Request\Csrf;
 use Dotenv\Dotenv;
 
@@ -26,6 +28,11 @@ $env = Dotenv::createImmutable(__DIR__ . '/../')->load();
 
 date_default_timezone_set($_ENV['TIME_ZONE']);
 
-$csrf = new Csrf();
+//$csrf = new Csrf();
+//
+//require __DIR__ . '/../Routes/routes.php';
 
-require __DIR__ . '/../Routes/routes.php';
+\Core\Database\Schema::delete('users', function (ChangeTableBuilder $table) {
+    $table->varchar('name', 255);
+    $table->index('name')->visible()->fullText();
+});

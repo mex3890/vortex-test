@@ -7,7 +7,7 @@ use Core\Abstractions\Migration;
 use Core\Database\Query\TableBuilder;
 use Core\Database\Schema;
 
-class CreateTestTable extends Migration
+class CreateTestTable implements Migration
 {
     public static function up(): void
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AutoRelation\Tests;
+namespace App\SchemaEngine\AutoRelation\Tests;
 
 use Core\Abstractions\Model;
 use Core\Helpers\ClassManager;

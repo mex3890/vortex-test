@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AutoRelation;
+namespace App\SchemaEngine;
 
 use Core\Database\JoinBuilder;
 use Core\Database\Schema;

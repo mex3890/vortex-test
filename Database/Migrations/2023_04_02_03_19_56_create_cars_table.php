@@ -6,7 +6,7 @@ use Core\Abstractions\Migration;
 use Core\Database\Query\TableBuilder;
 use Core\Database\Schema;
 
-class CreateCarsTable extends Migration
+class CreateCarsTable implements Migration
 {
     public static function up(): void
     {
@@ -14,7 +14,7 @@ class CreateCarsTable extends Migration
             $table->id()->primaryKey()->autoIncrement();
             $table->varchar('name', 125);
             $table->varchar('brand', 125);
-            $table->id('user_id')->unique()->foreignKey('users', 'id');
+            $table->id('user_id')->foreignKey('users', 'id');
             return $table;
         });
     }

@@ -6,7 +6,7 @@ use Core\Abstractions\Migration;
 use Core\Database\Query\TableBuilder;
 use Core\Database\Schema;
 
-class CreatePhonesTable extends Migration
+class CreatePhonesTable implements Migration
 {
     public static function up(): void
     {

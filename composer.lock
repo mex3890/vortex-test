@@ -663,12 +663,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "e93bac9967ca62dffea9d3fa37832233e15010be"
+                "reference": "22139f9c425d2be619ccbf1bdbabbd67d1060c50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/e93bac9967ca62dffea9d3fa37832233e15010be",
-                "reference": "e93bac9967ca62dffea9d3fa37832233e15010be",
+                "url": "https://api.github.com/repos/symfony/console/zipball/22139f9c425d2be619ccbf1bdbabbd67d1060c50",
+                "reference": "22139f9c425d2be619ccbf1bdbabbd67d1060c50",
                 "shasum": ""
             },
             "require": {
@@ -751,7 +751,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-02T01:25:41+00:00"
+            "time": "2023-04-04T06:17:48+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -1417,12 +1417,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "ae58728630949fa443d94c394198bbf3d7bc7716"
+                "reference": "4eaba3573adcba5fec6589b806378a35cdcac9fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/ae58728630949fa443d94c394198bbf3d7bc7716",
-                "reference": "ae58728630949fa443d94c394198bbf3d7bc7716",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/4eaba3573adcba5fec6589b806378a35cdcac9fc",
+                "reference": "4eaba3573adcba5fec6589b806378a35cdcac9fc",
                 "shasum": ""
             },
             "require": {
@@ -1509,7 +1509,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-31T09:18:46+00:00"
+            "time": "2023-04-04T08:45:02+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -1599,12 +1599,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "00eb022c39bf24d98fef1027c10cbe8ca6e2b3d4"
+                "reference": "cb21bc93f2fe7c0b9859bce455635cfd4658c2f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/00eb022c39bf24d98fef1027c10cbe8ca6e2b3d4",
-                "reference": "00eb022c39bf24d98fef1027c10cbe8ca6e2b3d4",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/cb21bc93f2fe7c0b9859bce455635cfd4658c2f3",
+                "reference": "cb21bc93f2fe7c0b9859bce455635cfd4658c2f3",
                 "shasum": ""
             },
             "require": {
@@ -1679,7 +1679,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-03T13:29:57+00:00"
+            "time": "2023-04-05T09:41:04+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -1768,26 +1768,29 @@
         },
         {
             "name": "vortex-framework/vortex-framework",
-            "version": "2.1.28",
+            "version": "2.1.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mex3890/vortex-framework.git",
-                "reference": "24849a670a9c779caea82bb3094cbf291f515eaf"
+                "reference": "e8926bd04c1c4c2e9c8441d5c899ece6d956a495"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mex3890/vortex-framework/zipball/24849a670a9c779caea82bb3094cbf291f515eaf",
-                "reference": "24849a670a9c779caea82bb3094cbf291f515eaf",
+                "url": "https://api.github.com/repos/mex3890/vortex-framework/zipball/e8926bd04c1c4c2e9c8441d5c899ece6d956a495",
+                "reference": "e8926bd04c1c4c2e9c8441d5c899ece6d956a495",
                 "shasum": ""
             },
             "require": {
+                "ext-ctype": "*",
+                "ext-openssl": "*",
                 "ext-pdo": "*",
                 "fzaninotto/faker": "^1.5",
                 "monolog/monolog": "^3.2",
                 "nesbot/carbon": "^2.66",
+                "php": "^8.2",
                 "phpmailer/phpmailer": "^6.6",
                 "smarty/smarty": "^4.2",
-                "symfony/console": "^6.1",
+                "symfony/console": "^6.2",
                 "symfony/var-dumper": "^6.2",
                 "vlucas/phpdotenv": "^5.4"
             },
@@ -1810,9 +1813,9 @@
             "description": "description",
             "support": {
                 "issues": "https://github.com/mex3890/vortex-framework/issues",
-                "source": "https://github.com/mex3890/vortex-framework/tree/2.1.28"
+                "source": "https://github.com/mex3890/vortex-framework/tree/2.1.40"
             },
-            "time": "2023-04-04T05:28:16+00:00"
+            "time": "2023-04-19T04:54:42+00:00"
         }
     ],
     "packages-dev": [],

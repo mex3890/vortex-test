@@ -6,7 +6,7 @@ use Core\Abstractions\Migration;
 use Core\Database\Query\TableBuilder;
 use Core\Database\Schema;
 
-class CreateEnterprisesTable extends Migration
+class CreateEnterprisesTable implements Migration
 {
     public static function up(): void
     {

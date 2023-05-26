@@ -1,10 +1,11 @@
 <?php
 
-namespace App\AutoRelation;
+namespace App\SchemaEngine;
 
+use AllowDynamicProperties;
 use Core\Adapters\Collection;
 
-class Table
+#[AllowDynamicProperties]class Table
 {
     public array $columns;
     public string $name;

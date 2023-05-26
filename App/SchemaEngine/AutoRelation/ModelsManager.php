@@ -1,7 +1,9 @@
 <?php
 
-namespace App\AutoRelation;
+namespace App\SchemaEngine\AutoRelation;
 
+use App\SchemaEngine\Column;
+use App\SchemaEngine\Table;
 use Core\Helpers\FileDirManager;
 use Core\Helpers\StrTool;
 

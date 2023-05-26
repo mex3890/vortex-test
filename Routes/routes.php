@@ -1,15 +1,13 @@
 <?php
 
 use App\Controllers\UserController;
+use App\Models\User;
+use Core\Database\JoinBuilder;
+use Core\Database\Query;
 use Core\Helpers\Uri;
 use Core\Routes\Route;
 
 $route = new Route();
-
-$route->get('/', function () {
-    $x = \App\Models\X::find()->where('id', 1)->first()->get();
-    dd($x->ks()->get());
-});
 
 $route->get('/login', function () {
     view('login.galaxy.tpl', ['home_url' => Uri::getRootPath()]);
