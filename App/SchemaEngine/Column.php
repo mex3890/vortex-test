@@ -10,8 +10,13 @@ class Column
     public ?int $max_length;
     public bool $unique = false;
     public bool $primary_key = false;
+    public string|null|int $default = null;
+    public bool $nullable = true;
+    public bool $auto_increment = false;
     public string $referenced_table;
     public string $referenced_column;
+    public bool $cascade_on_delete = false;
+    public bool $cascade_on_update = false;
 
     public function __construct(array $parameters)
     {
@@ -41,6 +46,28 @@ class Column
             'PRI' => $this->primary_key = true,
             default => '',
         };
+
+        if ($default = $this->parameters['COLUMN_DEFAULT']) {
+            $this->default = $default;
+        }
+
+        if ($auto_increment = $this->parameters['EXTRA']) {
+            if ($auto_increment === 'auto_increment') {
+                $this->auto_increment = true;
+            }
+        }
+
+        if ($this->parameters['IS_NULLABLE']) {
+            $this->nullable = true;
+        }
+
+        if ($this->parameters['UPDATE_RULE'] === 'CASCADE') {
+            $this->cascade_on_update = true;
+        }
+
+        if ($this->parameters['DELETE_RULE'] === 'CASCADE') {
+            $this->cascade_on_delete = true;
+        }
     }
 
     private function setForeignKey(): void
