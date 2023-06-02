@@ -22,9 +22,9 @@ class SchemaMapper
     public array $schema_skeleton;
     public array $tables;
 
-    public function __construct()
+    public function __construct(?string $schema_name = null)
     {
-        $this->schema_name = $_ENV['DB_DATABASE'];
+        $this->schema_name = $schema_name ?? $_ENV['DB_DATABASE'];
         $this->setSchemaTablesNames();
         $this->setTablesSkeleton();
         $this->mountSchemaTablesObject();
@@ -45,6 +45,7 @@ class SchemaMapper
             $this->schema_skeleton[$table] = Schema::select(static::COLUMNS_TABLE, [
                 'DISTINCT ' . static::COLUMNS_TABLE . '.' . static::COLUMN_NAME_COLUMN,
                 static::COLUMNS_TABLE . '.DATA_TYPE',
+                static::COLUMNS_TABLE . '.COLUMN_TYPE',
                 static::COLUMNS_TABLE . '.COLUMN_DEFAULT',
                 static::COLUMNS_TABLE . '.IS_NULLABLE',
                 static::COLUMNS_TABLE . '.EXTRA',

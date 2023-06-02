@@ -2,6 +2,8 @@
 
 namespace App\SchemaEngine;
 
+use Core\Helpers\StrTool;
+
 class Column
 {
     private array $parameters;
@@ -10,6 +12,7 @@ class Column
     public ?int $max_length;
     public bool $unique = false;
     public bool $primary_key = false;
+    public bool $foreign_key = false;
     public string|null|int $default = null;
     public bool $nullable = true;
     public bool $auto_increment = false;
@@ -17,6 +20,7 @@ class Column
     public string $referenced_column;
     public bool $cascade_on_delete = false;
     public bool $cascade_on_update = false;
+    public ?string $options = null;
 
     public function __construct(array $parameters)
     {
@@ -37,6 +41,11 @@ class Column
     {
         $this->type = $this->parameters['DATA_TYPE'];
         $this->max_length = $this->parameters['CHARACTER_MAXIMUM_LENGTH'] ?? null;
+
+        if ($this->type === 'enum' || $this->type === 'set') {
+            $options = str_replace($this->type . '(', '', $this->parameters['COLUMN_TYPE']);
+            $this->options = substr($options, 0, -1);
+        }
     }
 
     private function setConstraints(): void
@@ -73,6 +82,7 @@ class Column
     private function setForeignKey(): void
     {
         if ($this->parameters['CONSTRAINT_TYPE'] === 'FOREIGN KEY') {
+            $this->foreign_key = true;
             $this->referenced_table = $this->parameters['REFERENCED_TABLE_NAME'];
             $this->referenced_column = $this->parameters['REFERENCED_COLUMN_NAME'];
         }
