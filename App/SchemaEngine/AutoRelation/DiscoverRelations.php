@@ -13,8 +13,14 @@ class DiscoverRelations
         private readonly bool $with_test = true)
     {
         $this->schema = new SchemaMapper();
-        dd($this->schema);
     }
 
+    private function setRelations(): array
+    {
+        foreach ($this->schema as $table) {
+            dd($table);
+        }
 
+        return [];
+    }
 }

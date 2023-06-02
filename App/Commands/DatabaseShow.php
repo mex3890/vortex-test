@@ -3,9 +3,10 @@
 namespace App\Commands;
 
 use App\SchemaEngine\Column;
-use App\SchemaEngine\Table as SchemaTable;
 use App\SchemaEngine\SchemaMapper;
+use App\SchemaEngine\Table as SchemaTable;
 use Core\Cosmo\Cosmo;
+use Core\Database\Query;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -30,6 +31,25 @@ class DatabaseShow extends Command
     {
         $this->cosmo->start($output);
         $this->cosmo->title('DB', 'Display');
+
+        if (!isset($_ENV['DB_DATABASE']) || $_ENV['DB_DATABASE'] === '') {
+                $this->cosmo->finish();
+                $this->cosmo->failMessage("Database name not found in .env", $this);
+                $this->cosmo->commandFail('DB display');
+
+                return Command::FAILURE;
+        }
+
+        $exist_database = Query::select('information_schema.schemata', 'schema_name ')
+            ->where('schema_name', $_ENV['DB_DATABASE'])->get()->count();
+
+        if ($exist_database !== 1) {
+            $this->cosmo->finish();
+            $this->cosmo->failMessage('Database with name "' . $_ENV['DB_DATABASE'] . '" not found', $this);
+            $this->cosmo->commandFail('DB display');
+
+            return Command::FAILURE;
+        }
 
         $table = $this->mountCosmoTable($output, new SchemaMapper());
         $table->render();
