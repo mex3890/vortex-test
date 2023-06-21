@@ -83,9 +83,12 @@ class SchemaMapper
                 return $join->on(
                     static::REFERENTIAL_CONSTRAINTS_TABLE . '.' . static::CONSTRAINT_NAME_COLUMN,
                     static::CONSTRAINTS_TABLE . '.' . static::CONSTRAINT_NAME_COLUMN
-                    )->and(
-                        self::REFERENTIAL_CONSTRAINTS_TABLE . '.' . self::TABLE_NAME_COLUMN,
-                        self::COLUMNS_TABLE . '.' . self::TABLE_NAME_COLUMN
+                )->and(
+                    self::REFERENTIAL_CONSTRAINTS_TABLE . '.' . self::TABLE_NAME_COLUMN,
+                    self::COLUMNS_TABLE . '.' . self::TABLE_NAME_COLUMN
+                )->and(
+                    self::REFERENTIAL_CONSTRAINTS_TABLE . '.' . self::CONSTRAINT_SCHEMA_COLUMN,
+                    self::COLUMNS_TABLE . '.' . self::TABLE_SCHEMA_COLUMN
                 );
             })->where(static::COLUMNS_TABLE . '.' . static::TABLE_SCHEMA_COLUMN, $this->schema_name)
                 ->where(static::COLUMNS_TABLE . '.' . static::TABLE_NAME_COLUMN, $table)
@@ -96,7 +99,7 @@ class SchemaMapper
     private function mountSchemaTablesObject(): void
     {
         foreach ($this->schema_skeleton as $table_name => $table) {
-            $this->tables[] = new Table($table_name, $table);
+            $this->tables[$table_name] = new Table($table_name, $table);
         }
     }
 

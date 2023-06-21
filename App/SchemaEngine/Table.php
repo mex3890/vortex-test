@@ -4,6 +4,8 @@ namespace App\SchemaEngine;
 
 use AllowDynamicProperties;
 use Core\Adapters\Collection;
+use Core\Helpers\ArrayTool;
+use Core\Helpers\StrTool;
 
 #[AllowDynamicProperties]class Table
 {

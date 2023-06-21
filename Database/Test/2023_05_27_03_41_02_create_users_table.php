@@ -11,12 +11,13 @@ class CreateUsersTable implements Migration
     public static function up(): void
     {
         Schema::create('users', function (TableBuilder $table) {
-            $table->id()->primaryKey()->autoIncrement();
-            $table->varchar('name', 225);
-            $table->varchar('email', 125)->unique();
-            $table->varchar('password', 125);
+            $table->bigInt('id')->primaryKey()->autoIncrement();
+            $table->varchar('name',225);
+            $table->varchar('email',125)->unique();
+            $table->varchar('password',125);
             $table->dateTime('created_at');
-            $table->id('enterprise_id')->foreignKey('enterprises', 'id')->cascadeOnDelete();
+            $table->bigInt('enterprise_id')->foreignKey('enterprises', 'id');
+            $table->bigInt('enterprise_id')->cascadeOnDelete()->foreignKey('enterprises', 'id');
             return $table;
         });
     }
