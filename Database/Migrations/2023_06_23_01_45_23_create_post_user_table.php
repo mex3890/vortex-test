@@ -12,8 +12,8 @@ class CreatePostUserTable implements Migration
     {
         Schema::create('post_user', function (TableBuilder $table) {
             $table->bigInt('id')->primaryKey()->autoIncrement();
-            $table->bigInt('post_id')->foreignKey('posts', 'id');
             $table->bigInt('user_id')->foreignKey('users', 'id');
+            $table->bigInt('post_id')->foreignKey('posts', 'id');
             return $table;
         });
     }

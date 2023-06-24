@@ -75,7 +75,7 @@ class ReverseEngine
             FileDirManager::createFileByTemplate(
                 Carbon::now()->addSeconds($index)
                     ->format('Y_m_d_H_i_s') . "_create_{$table->name}_table.php",
-                'Database\\Test',
+                'Database\\Migrations',
                 __DIR__ . '/../../Stubs/migration_template.php',
                 [
                     'MigrationClassName' => 'Create' . StrTool::pascalCase($table->name) . 'Table',

@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use App\SchemaEngine\Reverse\ReverseEngine;
+use App\SchemaEngine\SchemaHelper;
 use App\SchemaEngine\SchemaMapper;
 use App\SchemaEngine\Table;
 use Core\Cosmo\Cosmo;
@@ -29,7 +30,17 @@ class DatabaseReverse extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $reverse = new ReverseEngine(new SchemaMapper());
+        $this->cosmo->start($output);
+        $this->cosmo->title('DB', 'reverse');
+
+        if (!SchemaHelper::checkIfDatabaseIsSetAndExists($this->cosmo, $this)) {
+            return Command::FAILURE;
+        }
+
+        new ReverseEngine(new SchemaMapper());
+
+        $this->cosmo->finish();
+        $this->cosmo->commandSuccess('DB reverse');
 
         return Command::SUCCESS;
     }
