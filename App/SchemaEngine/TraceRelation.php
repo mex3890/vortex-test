@@ -10,7 +10,7 @@ class TraceRelation
 {
     private Node $root;
     private array $passed_models;
-    private string $full_string = '';
+    private array $single_trace;
     private array $traces;
     public function __construct(public array $models_relations)
     {
@@ -61,7 +61,7 @@ class TraceRelation
     {
         foreach ($this->root->getChildren() as $child) {
             $this->loadTraceRelation($child);
-            $this->full_string = '';
+            $this->single_trace = [];
         }
 
         dd($this->traces);
@@ -69,15 +69,21 @@ class TraceRelation
 
     private function loadTraceRelation(Node $node): void
     {
-        $this->full_string .= $node->getValue() . ' -> ';
-        $this->traces[] = substr($this->full_string, 0, -4);
+        $this->single_trace[] = $node->getValue();
+
+        if (count($this->single_trace) !== 1) {
+            $this->traces[] = $this->single_trace;
+        }
 
         if ($node->isLeaf()) {
+            array_pop($this->single_trace);
             return;
         }
 
         foreach ($node->getChildren() as $child) {
             $this->loadTraceRelation($child);
         }
+
+        array_pop($this->single_trace);
     }
 }
