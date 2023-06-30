@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a40a53854d2ecfef2696ec869d0c20a",
+    "content-hash": "0e11c867c7a34dfda1ece80fde578006",
     "packages": [
         {
             "name": "fzaninotto/faker",
@@ -329,6 +329,61 @@
                 }
             ],
             "time": "2023-02-25T13:14:29+00:00"
+        },
+        {
+            "name": "nicmart/tree",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nicmart/Tree.git",
+                "reference": "6ce98aa086b5628748cfac65e98aabec7078cbe9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nicmart/Tree/zipball/6ce98aa086b5628748cfac65e98aabec7078cbe9",
+                "reference": "6ce98aa086b5628748cfac65e98aabec7078cbe9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.0.0 || ~8.1.0 || ~8.2.0"
+            },
+            "require-dev": {
+                "ergebnis/composer-normalize": "^2.31.0",
+                "ergebnis/license": "^2.1.0",
+                "ergebnis/php-cs-fixer-config": "^5.9.2",
+                "fakerphp/faker": "^1.23.0",
+                "infection/infection": "~0.26.19",
+                "phpunit/phpunit": "^9.6.9",
+                "psalm/plugin-phpunit": "~0.18.4",
+                "vimeo/psalm": "^5.13.1"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tree\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolò Martini",
+                    "email": "nicmartnic@gmail.com"
+                },
+                {
+                    "name": "Andreas Möller",
+                    "email": "am@localheinz.com"
+                }
+            ],
+            "description": "A basic but flexible php tree data structure and a fluent tree builder implementation.",
+            "support": {
+                "issues": "https://github.com/nicmart/Tree/issues",
+                "source": "https://github.com/nicmart/Tree/tree/master"
+            },
+            "time": "2023-06-28T11:57:32+00:00"
         },
         {
             "name": "phpmailer/phpmailer",
@@ -1821,7 +1876,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "nicmart/tree": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

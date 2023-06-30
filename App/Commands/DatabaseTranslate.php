@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'db:translate',
+    name: 'DB:translate',
 )]
 class DatabaseTranslate extends Command
 {

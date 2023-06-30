@@ -3,12 +3,8 @@
 namespace App\Commands;
 
 use App\SchemaEngine\AutoRelation\DiscoverRelations;
-use App\SchemaEngine\Column;
 use App\SchemaEngine\SchemaHelper;
-use App\SchemaEngine\SchemaMapper;
-use App\SchemaEngine\Table as SchemaTable;
 use Core\Cosmo\Cosmo;
-use Core\Database\Query;
 use Core\Helpers\StrTool;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -18,7 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'db:relationships',
+    name: 'DB:relationships',
 )]
 class DatabaseRelations extends Command
 {

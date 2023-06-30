@@ -5,6 +5,7 @@ namespace App\SchemaEngine\AutoRelation;
 use App\SchemaEngine\Column;
 use App\SchemaEngine\SchemaMapper;
 use App\SchemaEngine\Table;
+use App\SchemaEngine\TraceRelation;
 use Core\Helpers\StrTool;
 
 class DiscoverRelations
@@ -16,6 +17,7 @@ class DiscoverRelations
         private readonly bool $with_pivot_model = true,
         private readonly bool $with_test = true)
     {
+        ini_set('memory_limit', -1);
         $this->schema = new SchemaMapper();
     }
 
@@ -49,6 +51,8 @@ class DiscoverRelations
                 $this->resolveRelation($table, $foreign_key);
             }
         }
+
+        $this->setTraceRelations();
 
         return [
             'relationships' => $this->final_relationships,
@@ -139,6 +143,11 @@ class DiscoverRelations
             'caller_foreign_key' => $column->name,
             'relation_type' => Relationships::HAS_MANY
         ];
+    }
+
+    private function setTraceRelations()
+    {
+        $tree = (new TraceRelation($this->final_relationships))->mountTree();
     }
 
     private function getModelNameByTable(string $table_name): string

@@ -14,7 +14,8 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "vortex-framework/vortex-framework": "^2.1",
-      "ext-bcmath": "*"
+        "ext-bcmath": "*",
+        "nicmart/tree": "dev-master",
+        "vortex-framework/vortex-framework": "^2.1"
     }
 }
