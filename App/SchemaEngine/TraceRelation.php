@@ -3,15 +3,15 @@
 namespace App\SchemaEngine;
 
 use Tree\Node\Node;
-use Tree\Visitor\PreOrderVisitor;
-use Tree\Visitor\YieldVisitor;
 
 class TraceRelation
 {
     private Node $root;
     private array $passed_models;
+    private array $loaded_relations_ids = [];
     private array $single_trace;
     private array $traces;
+
     public function __construct(public array $models_relations)
     {
     }
@@ -22,7 +22,9 @@ class TraceRelation
 
         foreach ($this->models_relations as $model_name => $relations) {
             $firstLevelRootChild = new Node($model_name);
+
             $this->passed_models = [$model_name];
+
             $this->root->addChild($firstLevelRootChild);
 
             if (empty($relations)) {
@@ -30,7 +32,6 @@ class TraceRelation
             }
 
             $this->discoverChildNodes($firstLevelRootChild, $relations);
-//            dump('=======================');
         }
 
         $this->resolveThirdRelations();
@@ -39,14 +40,17 @@ class TraceRelation
     private function discoverChildNodes(Node $parentNode, array $relations): void
     {
         foreach ($relations as $relation) {
-
             if (in_array($relation['called_model'], $this->passed_models)) {
                 continue;
             }
 
             $newNode = new Node($relation['called_model']);
-//            dump($parentNode->getValue() . ' -> ' . $newNode->getValue());
             $parentNode->addChild($newNode);
+
+            if ($parentNode->getValue() === $newNode->getValue()) {
+                continue;
+            }
+
             $this->passed_models[] = $relation['called_model'];
 
             if (empty($this->models_relations[$relation['called_model']])) {
@@ -64,7 +68,7 @@ class TraceRelation
             $this->single_trace = [];
         }
 
-        dd($this->traces);
+        dd($this->traces ?? 'aaaaaa');
     }
 
     private function loadTraceRelation(Node $node): void
@@ -85,5 +89,10 @@ class TraceRelation
         }
 
         array_pop($this->single_trace);
+    }
+
+    private function checkIfHasAutoRelation(string $table_name, array $relations)
+    {
+
     }
 }

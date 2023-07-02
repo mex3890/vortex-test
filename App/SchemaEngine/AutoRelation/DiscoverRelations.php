@@ -6,6 +6,7 @@ use App\SchemaEngine\Column;
 use App\SchemaEngine\SchemaMapper;
 use App\SchemaEngine\Table;
 use App\SchemaEngine\TraceRelation;
+use Core\Helpers\DateTime;
 use Core\Helpers\StrTool;
 
 class DiscoverRelations
@@ -17,7 +18,6 @@ class DiscoverRelations
         private readonly bool $with_pivot_model = true,
         private readonly bool $with_test = true)
     {
-        ini_set('memory_limit', -1);
         $this->schema = new SchemaMapper();
     }
 
@@ -73,6 +73,7 @@ class DiscoverRelations
             'called_primary_key' => $pivotTable->pivot_columns[1]->referenced_column,
             'called_foreign_key' => $pivotTable->pivot_columns[1]->name,
             'relation_type' => Relationships::BELONGS_TO_MANY,
+            'id' => $this->generateUniqueId(),
         ];
 
         $this->final_relationships[$second_model][] = [
@@ -83,6 +84,7 @@ class DiscoverRelations
             'called_primary_key' => $pivotTable->pivot_columns[0]->referenced_column,
             'called_foreign_key' => $pivotTable->pivot_columns[0]->name,
             'relation_type' => Relationships::BELONGS_TO_MANY,
+            'id' => $this->generateUniqueId(),
         ];
 
         if ($this->with_pivot_model) {
@@ -93,7 +95,8 @@ class DiscoverRelations
                 'caller_primary_key' => $pivotTable->primary_keys[0]->name ?? 'id',
                 'called_primary_key' => $this->schema->tables[$pivotTable->pivot_columns[0]->referenced_table]->primary_key[0] ?? 'id',
                 'called_foreign_key' => $pivotTable->pivot_columns[0]->name,
-                'relation_type' => Relationships::BELONGS_TO
+                'relation_type' => Relationships::BELONGS_TO,
+                'id' => $this->generateUniqueId(),
             ];
 
             $this->final_relationships[$pivot_model][] = [
@@ -101,7 +104,8 @@ class DiscoverRelations
                 'caller_primary_key' => $pivotTable->primary_keys[1]->name ?? 'id',
                 'called_primary_key' => $this->schema->tables[$pivotTable->pivot_columns[1]->referenced_table]->primary_key[0] ?? 'id',
                 'called_foreign_key' => $pivotTable->pivot_columns[1]->name,
-                'relation_type' => Relationships::BELONGS_TO
+                'relation_type' => Relationships::BELONGS_TO,
+                'id' => $this->generateUniqueId(),
             ];
         }
     }
@@ -111,19 +115,33 @@ class DiscoverRelations
         $main_model = $this->getModelNameByTable($table->name);
         $related_model = $this->getModelNameByTable($column->referenced_table);
 
+        if ($column->referenced_table === $table->name) {
+            $this->final_relationships[$main_model][] = [
+                'called_model' => $main_model,
+                'caller_foreign_key' => $column->name,
+                'relation_type' => Relationships::HAS_ONE,
+                'auto_relation' => true,
+                'id' => $this->generateUniqueId(),
+            ];
+
+            return;
+        }
+
         if ($column->unique) {
             $this->final_relationships[$main_model][] = [
                 'called_model' => $related_model,
                 'caller_primary_key' => $table->primary_keys[0]->name ?? 'id',
                 'called_primary_key' => $column->referenced_column,
                 'called_foreign_key' => $column->name,
-                'relation_type' => Relationships::BELONGS_TO
+                'relation_type' => Relationships::BELONGS_TO,
+                'id' => $this->generateUniqueId(),
             ];
 
             $this->final_relationships[$related_model][] = [
                 'called_model' => $main_model,
                 'caller_foreign_key' => $column->name,
-                'relation_type' => Relationships::HAS_ONE
+                'relation_type' => Relationships::HAS_ONE,
+                'id' => $this->generateUniqueId(),
             ];
 
             return;
@@ -134,14 +152,16 @@ class DiscoverRelations
             'caller_primary_key' => $table->primary_keys[0]->name ?? 'id',
             'called_primary_key' => $column->referenced_column,
             'called_foreign_key' => $column->name,
-            'relation_type' => Relationships::BELONGS_TO
+            'relation_type' => Relationships::BELONGS_TO,
+            'id' => $this->generateUniqueId(),
         ];
 
         $this->final_relationships[$related_model][] = [
             'called_model' => $main_model,
             'caller_primary_key' => 'id',
             'caller_foreign_key' => $column->name,
-            'relation_type' => Relationships::HAS_MANY
+            'relation_type' => Relationships::HAS_MANY,
+            'id' => $this->generateUniqueId(),
         ];
     }
 
@@ -153,5 +173,10 @@ class DiscoverRelations
     private function getModelNameByTable(string $table_name): string
     {
         return StrTool::singularize($table_name);
+    }
+
+    private function generateUniqueId(): float
+    {
+        return DateTime::retrieveCurrentMillisecond();
     }
 }
