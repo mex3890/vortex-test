@@ -33,14 +33,19 @@ class TraceRelation
 
             $this->discoverChildNodes($firstLevelRootChild, $relations);
         }
-
+   
         $this->resolveThirdRelations();
     }
 
     private function discoverChildNodes(Node $parentNode, array $relations): void
     {
         foreach ($relations as $relation) {
-            if (in_array($relation['called_model'], $this->passed_models)) {
+            // If node is an auto relation and not child of root child
+            if (isset($relation['auto_relation']) && $parentNode->getParent() !== $this->root) {
+                continue;
+            }
+
+            if (in_array($relation['called_model'], $this->passed_models) && !isset($relation['auto_relation'])) {
                 continue;
             }
 
@@ -48,6 +53,10 @@ class TraceRelation
             $parentNode->addChild($newNode);
 
             if ($parentNode->getValue() === $newNode->getValue()) {
+                continue;
+            }
+
+            if (isset($relation['auto_relation'])) {
                 continue;
             }
 
