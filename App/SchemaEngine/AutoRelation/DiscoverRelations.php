@@ -175,8 +175,8 @@ class DiscoverRelations
         return StrTool::singularize($table_name);
     }
 
-    private function generateUniqueId(): float
+    private function generateUniqueId(): string
     {
-        return DateTime::retrieveCurrentMillisecond();
+        return random_bytes(10);
     }
 }
