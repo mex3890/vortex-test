@@ -52,12 +52,12 @@ class DiscoverRelations
             }
         }
 
-        $this->setTraceRelations();
+        return $this->setTraceRelations();
 
-        return [
-            'relationships' => $this->final_relationships,
-            'models' => $model_tables,
-        ];
+//        return [
+//            'relationships' => $this->final_relationships,
+//            'models' => $model_tables,
+//        ];
     }
 
     private function resolvePivotRelations(Table $pivotTable): void
@@ -167,7 +167,7 @@ class DiscoverRelations
 
     private function setTraceRelations()
     {
-        $tree = (new TraceRelation($this->final_relationships))->mountTree();
+        return (new TraceRelation($this->final_relationships))->mountTree();
     }
 
     private function getModelNameByTable(string $table_name): string

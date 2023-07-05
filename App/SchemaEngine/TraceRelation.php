@@ -2,7 +2,6 @@
 
 namespace App\SchemaEngine;
 
-use Core\Helpers\ArrayTool;
 use Tree\Node\Node;
 
 class TraceRelation
@@ -23,7 +22,6 @@ class TraceRelation
         $this->root = new Node('root');
 
         foreach ($this->models_relations as $model_name => $relations) {
-            dump("==============================");
             $firstLevelRootChild = new Node($model_name);
 
             $this->passed_models = [$model_name];
@@ -38,15 +36,16 @@ class TraceRelation
             $this->discoverChildNodes($firstLevelRootChild, $relations);
             $this->count++;
         }
-        
-        $this->resolveThirdRelations();
+
+        return $this->resolveThirdRelations();
     }
 
     private function discoverChildNodes(Node $parentNode, array $relations): void
     {
         foreach ($relations as $relation) {
-            if (!empty($child = $parentNode->getChildren())) {
-                $this->unsetChild($parentNode);
+            if (!empty($parentNode->getChildren())) {
+                $this->loaded_relations_ids = [];
+                $this->unsetChild($parentNode->getParent());
             }
 
             // If node is an auto relation and not child of root child
@@ -58,7 +57,7 @@ class TraceRelation
                 continue;
             }
 
-            if ($this->hasParent($parentNode, $relation['called_model'])) {
+            if ($this->hasParent($parentNode, $relation['called_model']) && !isset($relation['auto_relation'])) {
                 continue;
             }
 
@@ -66,7 +65,7 @@ class TraceRelation
                 continue;
             }
 
-            if ($relation['called_model'] === $this->getFirstParent($parentNode)->getValue()) {
+            if ($relation['called_model'] === $this->getFirstParent($parentNode)->getValue() && !isset($relation['auto_relation'])) {
                 continue;
             }
 
@@ -79,9 +78,9 @@ class TraceRelation
             $newNode = new Node($relation['called_model']);
             $parentNode->addChild($newNode);
 
-//            if ($parentNode->getValue() === $newNode->getValue()) {
-//                continue;
-//            }
+            if ($parentNode->getValue() === $newNode->getValue()) {
+                continue;
+            }
 
             if (isset($relation['auto_relation'])) {
                 continue;
@@ -108,7 +107,9 @@ class TraceRelation
             $this->single_trace = [];
         }
 
-        dd($this->traces ?? 'aaaaaa');
+//        dd($this->root);
+        return $this->showTraces();
+//        dd($this->traces ?? 'aaaaaa');
     }
 
     private function loadTraceRelation(Node $node): void
@@ -159,16 +160,43 @@ class TraceRelation
 
     private function unsetChild(Node $parentNode): void
     {
-        $children = $parentNode->getParent()->getChildren();
+        $children = $parentNode->getChildren();
 
-            do {
-                unset($this->passed_models[array_search($children[0]->getValue(), $this->passed_models)]);
+        /** @var Node $child */
+        foreach ($children as $child) {
+//            dump('UNSET: ' . $child->getValue());
+            unset($this->passed_models[array_search($child->getValue(), $this->passed_models)]);
 
-                if (empty($nextChild = $children[0]->getChildren())) {
-                    break;
-                }
+            if (!empty($child->getChildren())) {
+                $this->unsetChild($child);
+            }
+        }
+    }
 
-                $children = $nextChild;
-            } while (true);
+    private function showTraces(): array
+    {
+        $rows = [];
+
+        foreach ($this->traces as $index => $trace) {
+            $formatted_trace = '<fg='
+                . ($index % 2 === 0 ? 'yellow' : 'blue')
+                . ';options=bold>';
+
+            $count = count($trace);
+
+            foreach ($trace as $second_index => $relation) {
+                $formatted_trace .= $relation . ($second_index < $count - 1 ? ' -> ' : '');
+            }
+
+
+            $rows[] = [$index, $formatted_trace . '</>'];
+        }
+
+        return $rows;
+    }
+
+    public function getTraces(): array
+    {
+        return $this->traces;
     }
 }
