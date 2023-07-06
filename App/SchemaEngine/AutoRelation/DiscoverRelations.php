@@ -21,7 +21,7 @@ class DiscoverRelations
         $this->schema = new SchemaMapper();
     }
 
-    public function setRelations(): array
+    public function setRelations($with_table = true): array
     {
         $model_tables = [];
 
@@ -52,12 +52,7 @@ class DiscoverRelations
             }
         }
 
-        return $this->setTraceRelations();
-
-//        return [
-//            'relationships' => $this->final_relationships,
-//            'models' => $model_tables,
-//        ];
+        return $this->setTraceRelations($with_table);
     }
 
     private function resolvePivotRelations(Table $pivotTable): void
@@ -165,9 +160,9 @@ class DiscoverRelations
         ];
     }
 
-    private function setTraceRelations()
+    private function setTraceRelations(bool $with_table)
     {
-        return (new TraceRelation($this->final_relationships))->mountTree();
+        return (new TraceRelation($this->final_relationships))->mountTree($with_table);
     }
 
     private function getModelNameByTable(string $table_name): string

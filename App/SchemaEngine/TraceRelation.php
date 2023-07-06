@@ -17,7 +17,7 @@ class TraceRelation
     {
     }
 
-    public function mountTree()
+    public function mountTree(bool $with_table)
     {
         $this->root = new Node('root');
 
@@ -37,7 +37,7 @@ class TraceRelation
             $this->count++;
         }
 
-        return $this->resolveThirdRelations();
+        return $this->resolveThirdRelations($with_table);
     }
 
     private function discoverChildNodes(Node $parentNode, array $relations): void
@@ -100,15 +100,18 @@ class TraceRelation
         }
     }
 
-    private function resolveThirdRelations()
+    private function resolveThirdRelations(bool $with_table): array
     {
         foreach ($this->root->getChildren() as $child) {
             $this->loadTraceRelation($child);
             $this->single_trace = [];
         }
 
-//        dd($this->root);
-        return $this->showTraces();
+        if ($with_table) {
+            return $this->showTraces();
+        }
+
+        return $this->showTracesWithoutTable();
 //        dd($this->traces ?? 'aaaaaa');
     }
 
@@ -190,6 +193,26 @@ class TraceRelation
 
 
             $rows[] = [$index, $formatted_trace . '</>'];
+        }
+
+        return $rows;
+    }
+
+    private function showTracesWithoutTable(): array
+    {
+        $rows = [];
+
+        foreach ($this->traces as $index => $trace) {
+            $formatted_trace = '';
+
+            $count = count($trace);
+
+            foreach ($trace as $second_index => $relation) {
+                $formatted_trace .= $relation . ($second_index < $count - 1 ? ' -> ' : '');
+            }
+
+
+            $rows[] = $formatted_trace;
         }
 
         return $rows;
