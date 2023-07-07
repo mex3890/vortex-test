@@ -41,7 +41,7 @@ class DatabaseTranslationTest extends Command
             $test_file_name .= '.php';
         }
 
-        $relations = (new DiscoverRelations())->setRelations(false);
+        $relations = (new DiscoverRelations())->setRelations()->getFormattedTraces();
         $expected_relations = require_once __DIR__ . "/../SchemaEngine/AutoRelation/Tests/$test_file_name";
         $relations_count = count($relations);
         $expected_relations_count = count($expected_relations);
@@ -81,6 +81,10 @@ class DatabaseTranslationTest extends Command
             ['<fg=green;options=bold>GENERATED RELATIONS COUNT</>', $relations_count],
             ['<fg=green;options=bold>UNMAPPED EXPECTED RELATIONS COUNT</>', count($expected_relations)],
             ['<fg=green;options=bold>UNEXPECTED GENERATED RELATIONS COUNT</>', count($relations)],
+            [
+                '<fg=green;options=bold>PASSED</>',
+                (count($relations) === 0 && count($expected_relations) === 0) ? 'TRUE' : 'FALSE'
+            ],
         ]);
 
         $output->writeln('');

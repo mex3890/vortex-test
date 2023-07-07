@@ -3,11 +3,12 @@
 namespace App\SchemaEngine\AutoRelation;
 
 use App\SchemaEngine\Column;
+use App\SchemaEngine\RelationTree;
 use App\SchemaEngine\SchemaMapper;
 use App\SchemaEngine\Table;
 use App\SchemaEngine\TraceRelation;
-use Core\Helpers\DateTime;
 use Core\Helpers\StrTool;
+use Exception;
 
 class DiscoverRelations
 {
@@ -21,7 +22,7 @@ class DiscoverRelations
         $this->schema = new SchemaMapper();
     }
 
-    public function setRelations($with_table = true): array
+    public function setRelations(): RelationTree
     {
         $model_tables = [];
 
@@ -52,7 +53,7 @@ class DiscoverRelations
             }
         }
 
-        return $this->setTraceRelations($with_table);
+        return $this->setTraceRelations();
     }
 
     private function resolvePivotRelations(Table $pivotTable): void
@@ -160,9 +161,10 @@ class DiscoverRelations
         ];
     }
 
-    private function setTraceRelations(bool $with_table)
+    private function setTraceRelations(): RelationTree
     {
-        return (new TraceRelation($this->final_relationships))->mountTree($with_table);
+        return new RelationTree($this->final_relationships);
+//        return (new TraceRelation($this->final_relationships))->mountTree($with_table);
     }
 
     private function getModelNameByTable(string $table_name): string
@@ -170,6 +172,10 @@ class DiscoverRelations
         return StrTool::singularize($table_name);
     }
 
+    /**
+     * @return string
+     * @throws Exception
+     */
     private function generateUniqueId(): string
     {
         return random_bytes(10);
