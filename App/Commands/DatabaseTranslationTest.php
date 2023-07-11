@@ -4,6 +4,7 @@ namespace App\Commands;
 
 use App\SchemaEngine\AutoRelation\DiscoverRelations;
 use App\SchemaEngine\SchemaHelper;
+use Core\Abstractions\Enums\PhpExtra;
 use Core\Cosmo\Cosmo;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -45,12 +46,18 @@ class DatabaseTranslationTest extends Command
         $expected_relations = require_once __DIR__ . "/../SchemaEngine/AutoRelation/Tests/$test_file_name";
         $relations_count = count($relations);
         $expected_relations_count = count($expected_relations);
+        $row_index = 0;
+        $index_pattern_characters = strlen((string)$relations_count);
 
         foreach ($relations as $index => $relation) {
             if (($expected_index = array_search($relation, $expected_relations)) !== false) {
-                $this->cosmo->fileSuccessRow($relation, 'MATCH');
+                $this->cosmo->fileSuccessRow(
+                    "<fg=blue>{$this->mountRowIndex($row_index, $index_pattern_characters)}</> " . $relation,
+                    'MATCH'
+                );
                 unset($expected_relations[$expected_index]);
                 unset($relations[$index]);
+                $row_index++;
             }
         }
 
@@ -99,5 +106,18 @@ class DatabaseTranslationTest extends Command
     protected function configure()
     {
         $this->addArgument('test_name', InputArgument::REQUIRED, '');
+    }
+
+    private function mountRowIndex(int $row_index, int $pattern_characters_count): string
+    {
+        $row_index = (string)$row_index;
+        $row_index_length = strlen($row_index);
+        $row_index = "[$row_index]";
+
+        if ($row_index_length < $pattern_characters_count) {
+            $row_index .= str_repeat(PhpExtra::WHITE_SPACE->value, $pattern_characters_count - $row_index_length);
+        }
+
+        return $row_index;
     }
 }

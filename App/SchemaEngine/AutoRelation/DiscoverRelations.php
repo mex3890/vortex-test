@@ -6,7 +6,6 @@ use App\SchemaEngine\Column;
 use App\SchemaEngine\RelationTree;
 use App\SchemaEngine\SchemaMapper;
 use App\SchemaEngine\Table;
-use App\SchemaEngine\TraceRelation;
 use Core\Helpers\StrTool;
 use Exception;
 
@@ -14,6 +13,7 @@ class DiscoverRelations
 {
     private SchemaMapper $schema;
     private array $final_relationships;
+    private array $models_tables;
 
     public function __construct(
         private readonly bool $with_pivot_model = true,
@@ -24,12 +24,12 @@ class DiscoverRelations
 
     public function setRelations(): RelationTree
     {
-        $model_tables = [];
+        $this->models_tables = [];
 
         foreach ($this->schema->tables as $table) {
             if ($table->pivot) {
                 if ($this->with_pivot_model) {
-                    $model_tables[StrTool::camelCase($table->name)] = $table->name;
+                    $this->models_tables[StrTool::pascalCase($table->name)] = $table->name;
                 }
 
                 $this->resolvePivotRelations($table);
@@ -37,7 +37,7 @@ class DiscoverRelations
                 continue;
             }
 
-            $model_tables[strtolower(StrTool::firstLetterUppercase(StrTool::singularize($table->name)))] = $table->name;
+            $this->models_tables[StrTool::pascalCase(StrTool::singularize($table->name))] = $table->name;
 
             if (empty($table->foreign_keys)) {
                 if (empty($this->final_relationships[StrTool::singularize($table->name)])) {
@@ -163,8 +163,7 @@ class DiscoverRelations
 
     private function setTraceRelations(): RelationTree
     {
-        return new RelationTree($this->final_relationships);
-//        return (new TraceRelation($this->final_relationships))->mountTree($with_table);
+        return new RelationTree($this->final_relationships, $this->models_tables);
     }
 
     private function getModelNameByTable(string $table_name): string

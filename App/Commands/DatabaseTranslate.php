@@ -6,6 +6,7 @@ use App\SchemaEngine\AutoRelation\DiscoverRelations;
 use App\SchemaEngine\AutoRelation\ModelManager;
 use App\SchemaEngine\SchemaHelper;
 use Core\Cosmo\Cosmo;
+use Core\Helpers\ArrayTool;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -51,12 +52,13 @@ class DatabaseTranslate extends Command
             '<fg=green;options=bold>TRACE</>',
         ]);
 
-        $relations = (new DiscoverRelations())->setRelations();
+        $traceRelations = (new DiscoverRelations())->setRelations();
+        $models_traces = $traceRelations->getTracesAndModels();
 
-        $table->setRows($relations);
+        $table->setRows($traceRelations->getFormattedTraceTableRows());
         $table->render();
-        die();
-        ModelManager::mount($relations['relationships'], $relations['models'], $this->cosmo);
+
+        ModelManager::mount($models_traces['traces'], $models_traces['tables'], $this->cosmo);
 
         $this->cosmo->finish();
         $this->cosmo->commandSuccess('DB translate');

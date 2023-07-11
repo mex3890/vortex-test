@@ -13,8 +13,9 @@ class RelationTree
     private Node $root;
     private array $single_trace = [];
     private array $traces = [];
+    private array $full_models = [];
 
-    public function __construct(private readonly array $models_relations)
+    public function __construct(private readonly array $models_relations, private readonly array $models_tables)
     {
         $this->mountTree();
         $this->resolveTraceRelations();
@@ -32,6 +33,10 @@ class RelationTree
             $count = count($trace);
 
             foreach ($trace as $second_index => $relation) {
+                if (!is_string($relation)) {
+                    $relation = $relation['called_model'];
+                }
+
                 $formatted_trace .= $relation . ($second_index < $count - 1 ? ' -> ' : '');
             }
 
@@ -51,6 +56,10 @@ class RelationTree
             $count = count($trace);
 
             foreach ($trace as $second_index => $relation) {
+                if (!is_string($relation)) {
+                    $relation = $relation['called_model'];
+                }
+
                 $formatted_trace .= $relation . ($second_index < $count - 1 ? ' -> ' : '');
             }
 
@@ -65,11 +74,51 @@ class RelationTree
         return $this->traces;
     }
 
+    public function getTracesAndModels(): array
+    {
+        return [
+            'traces' => $this->updateTrace(),
+            'models' => $this->full_models,
+            'tables' => $this->models_tables,
+        ];
+    }
+
+    private function updateTrace(): array
+    {
+        $formatted_trace = [];
+
+        foreach ($this->traces as $relations) {
+            $current_model = '';
+            $last_model = '';
+            $current_trace = [];
+
+            foreach ($relations as $index => $relation) {
+                if (is_string($relation)) {
+                    $current_model = $relation;
+                    $last_model = $relation;
+
+                    continue;
+                }
+
+                if (!is_string($last_relation = $relations[$index - 1])) {
+                    $last_model = $last_relation['called_model'];
+                }
+
+                $current_trace[] = array_merge($relation, ['caller_model' => $last_model]);
+            }
+
+            $formatted_trace[$current_model][] = $current_trace;
+        }
+
+        return $formatted_trace;
+    }
+
     private function mountTree(): void
     {
         $this->root = new Node('root');
 
         foreach ($this->models_relations as $model_name => $relations) {
+            $this->full_models[] = $model_name;
             $firstLevelRootChild = new Node($model_name);
 
             $this->passed_models = [$model_name];
@@ -103,17 +152,17 @@ class RelationTree
                 continue;
             }
 
-            if (TreeTool::hasParent($parentNode, $relation['called_model'], $this->root)
-                && !isset($relation['auto_relation'])) {
+            if ($this->hasParent($parentNode, $relation['called_model'], $this->root) && !isset($relation['auto_relation'])) {
                 continue;
             }
 
-            if ($parentNode->getParent()->getValue() === $relation['called_model']) {
+            if ($this->getRelationCalledModel($parentNode->getParent()) === $relation['called_model']) {
                 continue;
             }
 
-            if ($relation['called_model'] === TreeTool::getFirstParent($parentNode, $this->root)->getValue()
-                && !isset($relation['auto_relation'])) {
+            if ($relation['called_model'] === $this->getRelationCalledModel(
+                    TreeTool::getFirstParent($parentNode, $this->root)
+                ) && !isset($relation['auto_relation'])) {
                 continue;
             }
 
@@ -123,10 +172,10 @@ class RelationTree
             }
 
             $this->loaded_relations_ids[] = $relation['id'];
-            $newNode = new Node($relation['called_model']);
+            $newNode = new Node($relation);
             $parentNode->addChild($newNode);
 
-            if ($parentNode->getValue() === $newNode->getValue()) {
+            if ($this->getRelationCalledModel($parentNode) === $this->getRelationCalledModel($newNode)) {
                 continue;
             }
 
@@ -154,7 +203,7 @@ class RelationTree
 
         /** @var Node $child */
         foreach ($children as $child) {
-            unset($this->passed_models[array_search($child->getValue(), $this->passed_models)]);
+            unset($this->passed_models[array_search($this->getRelationCalledModel($child), $this->passed_models)]);
 
             if (!empty($child->getChildren())) {
                 $this->unsetChild($child);
@@ -188,5 +237,23 @@ class RelationTree
         }
 
         array_pop($this->single_trace);
+    }
+
+    private function getRelationCalledModel(Node|string $node): ?string
+    {
+        return $node ? (is_string($node_value = $node->getValue()) ? $node_value : $node_value['called_model']) : null;
+    }
+
+    private function hasParent(Node $parent, mixed $value, Node $root): bool
+    {
+        while ($parent !== $root) {
+            if ($this->getRelationCalledModel($parent) === $value) {
+                return true;
+            }
+
+            $parent = $parent->getParent();
+        }
+
+        return false;
     }
 }
